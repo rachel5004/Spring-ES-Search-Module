@@ -1,0 +1,61 @@
+{
+  "settings": {
+    "index": {
+      "number_of_shards": 5,
+      "number_of_replicas": 1
+    },
+    "analysis": {
+      "analyzer": {
+        "nori": {
+          "type": "custom",
+          "tokenizer": "nori_tokenizer_mixed",
+          "filter": [
+            "nori_readingform"
+          ]
+        }
+      },
+      "tokenizer": {
+        "nori_tokenizer_mixed": {
+          "type": "nori_tokenizer",
+          "decompound_mode": "mixed"
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "title": {
+        "type": "text",
+        "fields": {
+          "nori": {
+            "type": "text",
+            "analyzer": "nori"
+          },
+          "english": {
+            "type": "text",
+            "analyzer": "english"
+          }
+        }
+      },
+      "content": {
+        "type": "text",
+        "analyzer": "nori"
+      },
+      "author": {
+        "type": "integer",
+        "null_value": -1,
+        "ignore_malformed": true
+      },
+      "saleStatus": {
+        "type": "keyword"
+      },
+      "uploadTime": {
+        "type": "date",
+        "ignore_malformed": true
+      },
+      "parentCommunity": {
+        "type": "keyword"
+      }
+    }
+  }
+}

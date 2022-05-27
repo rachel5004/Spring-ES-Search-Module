@@ -1,0 +1,31 @@
+logging:
+  level:
+      org:
+        springframework:
+          data:
+            elasticsearch:
+              client:
+                WIRE: TRACE
+            mongodb:
+              core:
+                MongoTemplate: DEBUG
+server:
+  port: 9000
+spring:
+  profiles:
+    active: local
+  application:
+    name: search-service
+  data:
+    mongodb:
+      uri: mongodb://localhost:27018/gamewood
+    redis:
+      repositories:
+        enabled: false
+  redis:
+    host: localhost
+    port: 6379
+
+elasticsearch:
+  host: 127.0.0.1
+  port: 9200
