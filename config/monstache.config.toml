@@ -35,7 +35,13 @@ file-highlighting = false
 
 verbose = true
 
-direct-read-namespaces = ["gamewood.board"]
+[[script]]
+script = """
+module.exports = function(doc, ns) {
+    doc._meta_monstache = { index: ns.replace(".","-") };
+    return doc;
+}
+"""
 
 [logs]
 info = "/Users/yoojjang-mn/search-demo/config/info.log"
