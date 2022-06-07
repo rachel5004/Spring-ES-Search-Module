@@ -1,7 +1,9 @@
 package dev.demo.search.controller;
 
+import dev.demo.search.common.annotation.Authorized;
 import dev.demo.search.common.annotation.NonAuthorized;
 import dev.demo.search.common.response.CommonResponse;
+import dev.demo.search.common.util.SecurityUtil;
 import dev.demo.search.domain.SearchDto.*;
 import dev.demo.search.service.SearchService;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +21,11 @@ import java.util.Optional;
 @RequestMapping("/api/v1/search")
 public class SearchController {
 
-    private static final String ALL = ".*";
+    private static final String M_ALL = ".*";  // mongodb wildcard
+    private static final String E_ALL = "*";   // Elasticsearch wildcard
     private final SearchService searchService;
 
-    // 통합 검색 (게임 총 결과 수, 상위 4개 게임상세, 게시글 총 갯수, 상위 4개 글상세)
-    // 키워드
+    // 통합 검색 (총 검색 결과 수, 게임 총 갯수, 상위 4개 게임, 게시글 총 갯수, 상위 4개 글)
     @NonAuthorized
     @GetMapping
     public CommonResponse<SearchResponse> searchAll(@RequestParam String keyword) {
@@ -32,10 +34,20 @@ public class SearchController {
     }
 
     @NonAuthorized
+    @GetMapping("/test/non")
+    public String testnon() {
+        return SecurityUtil.getCurrentMemberNo();
+    }
+
+    @Authorized
+    @GetMapping("/test/auth")
+    public String testauth() {
+        return SecurityUtil.getCurrentMemberNo();
+    }
+
     @GetMapping("/test")
-    public CommonResponse<SearchBoardResponse> searchAll() {
-        var searchInfo = searchService.searchTest();
-        return CommonResponse.success(searchInfo);
+    public String test() {
+        return SecurityUtil.getCurrentMemberNo();
     }
 
     // 게임 검색
@@ -45,9 +57,9 @@ public class SearchController {
     public CommonResponse<SearchGameResponse> searchGame(@RequestParam String keyword,
                                                          @RequestParam Optional<String> platform,
                                                          @RequestParam Optional<String> genre,
-                                                         @RequestParam int page) {
-        SearchGameResponse searchResponse =
-                searchService.searchGameByKeyword(keyword, platform.orElse(ALL), genre.orElse(ALL), page);
+                                                         @RequestParam Integer page) {
+        var searchResponse=
+                searchService.searchGameByKeyword(keyword, platform.orElse(M_ALL), genre.orElse(M_ALL), page);
         return CommonResponse.success(searchResponse);
     }
 
@@ -59,8 +71,9 @@ public class SearchController {
     @GetMapping("/board")
     public CommonResponse<SearchBoardResponse> searchBoard(@RequestParam String keyword,
                                                            @RequestParam Optional<String> type,
-                                                           @RequestParam int page) {
-        SearchBoardResponse searchResponse = searchService.searchBoardByKeyword(keyword, type.orElse(ALL), page);
+                                                           @RequestParam Integer page) {
+        var searchResponse=
+                searchService.searchBoardByKeyword(keyword, type.orElse(E_ALL), page);
         return CommonResponse.success(searchResponse);
     }
 

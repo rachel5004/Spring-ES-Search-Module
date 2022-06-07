@@ -20,7 +20,7 @@ public class GameInfo {
     private String developer;
     @Field("release_info")
     private List<ReleaseInfo> releaseInfo;
-    private String genre;
+    private List<String> genre;
 //    private String introduce;
 //    private String posterImage;
 //    private String star;
@@ -35,7 +35,7 @@ public class GameInfo {
     }
 
     @Builder
-    public GameInfo(String title, String englishTitle, String developer, List<ReleaseInfo> releaseInfo, String genre) {
+    public GameInfo(String title, String englishTitle, String developer, List<ReleaseInfo> releaseInfo, List<String> genre) {
         this.title = title;
         this.englishTitle = englishTitle;
         this.developer = developer;

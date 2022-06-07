@@ -1,1 +1,1 @@
-GET http://localhost:9000/api/v1/search?keyword=사람
+GET http://localhost:9000/api/v1/search/board?keyword=사람&page=0

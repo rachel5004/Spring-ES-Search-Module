@@ -29,12 +29,6 @@ public class CustomGameRepositoryImpl implements CustomGameRepository {
         return games;
     }
 
-    public List<GameInfo2> findGameByKeywordTest(String keyword){
-        BasicQuery query = new BasicQuery("{$or:[{title:{$regex:/"+keyword+"/}},{title_en:{$regex:/"+keyword+"/}}]}");
-        List<GameInfo2> games = mongoOperations.find(query, GameInfo2.class);
-        return games;
-    }
-
     public List<GameInfo> findGameByKeyword(String keyword){
         BasicQuery query = new BasicQuery("{$or:[{title:{$regex:/"+keyword+"/}}," +
                                             "{developer:{$regex:/"+keyword+"/}}," +

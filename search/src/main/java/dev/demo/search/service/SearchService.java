@@ -3,7 +3,9 @@ package dev.demo.search.service;
 import dev.demo.search.domain.Board;
 import dev.demo.search.domain.GameInfo;
 import dev.demo.search.domain.GameInfo2;
-import dev.demo.search.domain.SearchDto.*;
+import dev.demo.search.domain.SearchDto.SearchBoardResponse;
+import dev.demo.search.domain.SearchDto.SearchGameResponse;
+import dev.demo.search.domain.SearchDto.SearchResponse;
 import dev.demo.search.repository.BoardSearchRepository;
 import dev.demo.search.repository.CustomGameRepositoryImpl;
 import dev.demo.search.repository.GameSearchRepository;
@@ -12,23 +14,22 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class SearchService {
 
-    private static final int ALL_SEARCH_DEFAULT_SIZE = 4;
-    private static final int DEFAULT_SIZE = 20;
-    private static final int DEFAULT_PAGE = 0;
+    private static final Integer ALL_SEARCH_SIZE = 4;
+    private static final Integer DEFAULT_SIZE = 20;
+    private static final Integer DEFAULT_PAGE = 0;
 
     private final BoardSearchRepository boardSearchRepository;
     private final GameSearchRepository gameSearchRepository;
     private final CustomGameRepositoryImpl customGameRepository;
 
-    public SearchBoardResponse searchTest() {
-        List<Board> searchResponse = boardSearchRepository.searchTest();
+    public SearchBoardResponse searchBoardTest() {
+        List<Board> searchResponse = boardSearchRepository.searchAll();
         return SearchBoardResponse.of(searchResponse);
     }
 
@@ -40,39 +41,39 @@ public class SearchService {
 
 
     public SearchResponse searchByKeyword(String keyword) {
+        // TODO: count 쿼리와 findby.subList(0,4) 성능 비교
+        // search board by keyword limit 4
+        List<GameInfo> gameInfos =
+                gameSearchRepository.findByKeywordforAll(keyword, getPageable(DEFAULT_PAGE, ALL_SEARCH_SIZE));
+        Integer gameCount = gameSearchRepository.getTotalCount(keyword);
         // search game by keyword limit 4
         List<Board> boards =
-                boardSearchRepository.findByKeywordForAll(keyword, getPageable(DEFAULT_PAGE, ALL_SEARCH_DEFAULT_SIZE));
-//        int boardCount = boardSearchRepository.getTotalCount(keyword);
-        // search board by keyword limit 6
-        List<GameInfo> gameInfos =
-                gameSearchRepository.findByKeywordforAll(keyword, getPageable(DEFAULT_PAGE, ALL_SEARCH_DEFAULT_SIZE));
-        int gameCount = gameSearchRepository.getTotalCount(keyword);
-        // searchresponse.of(games, boards)
-        return SearchResponse.of(1, gameInfos,boards);
+                boardSearchRepository.findByKeywordForAll(keyword, getPageable(DEFAULT_PAGE, ALL_SEARCH_SIZE));
+        Integer boardCount = boardSearchRepository.getTotalCount(keyword);
+        return SearchResponse.of(gameCount, gameInfos, boardCount, boards);
     }
 
     public SearchGameResponse searchGameByKeyword(String keyword, String platform,
-                                                  String genre, int page) {
-        int totalCount = gameSearchRepository.getTotalCount(keyword);
+                                                  String genre, Integer page) {
+        Integer totalCount = gameSearchRepository.getTotalCount(keyword);
         // get game metadata
         List<GameInfo> gameInfos = gameSearchRepository.findByKeyword(keyword, platform, genre, getPageable(page));
-        System.out.println(gameInfos.size());
         // convert to info
         return SearchGameResponse.of(totalCount, gameInfos);
     }
 
-    public SearchBoardResponse searchBoardByKeyword(String keyword, String type, int page) {
+    public SearchBoardResponse searchBoardByKeyword(String keyword, String type, Integer page) {
         List<Board> boardResults = boardSearchRepository.searchBoard(keyword, type, getPageable(page));
         // get board ids from results
         // get board entitiy from mongo
         return SearchBoardResponse.of(boardResults);
     }
 
-    private Pageable getPageable(int page) {
+    private Pageable getPageable(Integer page) {
         return PageRequest.of(page, DEFAULT_SIZE);
     }
-    private Pageable getPageable(int page, int size) {
+
+    private Pageable getPageable(Integer page, Integer size) {
         return PageRequest.of(page, size);
     }
 

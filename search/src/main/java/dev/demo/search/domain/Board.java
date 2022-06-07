@@ -7,11 +7,9 @@ import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.Mapping;
-import org.springframework.data.elasticsearch.annotations.Setting;
 
 @Getter
 @Document(indexName = "gamewood.board2")
-@Setting(settingPath = "settings.json")
 @Mapping(mappingPath = "mappings.json")
 public class Board {
 

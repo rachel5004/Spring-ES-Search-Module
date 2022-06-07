@@ -12,6 +12,12 @@ public class CommonResponse<T> {
     private String message;
     private String errorCode;
 
+    public static  <T> CommonResponse<T> success() {
+        return (CommonResponse<T>) CommonResponse.builder()
+                .result(Result.SUCCESS)
+                .build();
+    }
+
     public static  <T> CommonResponse<T> success(T data) {
         return (CommonResponse<T>) CommonResponse.builder()
                 .result(Result.SUCCESS)
