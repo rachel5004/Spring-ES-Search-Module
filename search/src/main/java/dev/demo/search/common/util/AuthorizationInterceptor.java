@@ -60,6 +60,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
     }
 
     private String getPayload(String token) {
+        token = token.replace(Constants.TOKEN_PREFIX,"");
         Base64.Decoder decoder = Base64.getUrlDecoder();
         return new String(decoder.decode(token.split("\\.")[1]));
     }
