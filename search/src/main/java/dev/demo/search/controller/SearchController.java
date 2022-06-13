@@ -1,6 +1,7 @@
 package dev.demo.search.controller;
 
 import dev.demo.search.common.annotation.Authorized;
+import dev.demo.search.common.annotation.CurrentUser;
 import dev.demo.search.common.annotation.NonAuthorized;
 import dev.demo.search.common.response.CommonResponse;
 import dev.demo.search.common.util.SecurityUtil;
@@ -46,8 +47,9 @@ public class SearchController {
     }
 
     @GetMapping("/test")
-    public String test() {
-        return SecurityUtil.getCurrentMemberNo();
+    public String test(@CurrentUser String currentUser) {
+        return currentUser;
+//        return SecurityUtil.getCurrentMemberNo();
     }
 
     // 게임 검색
