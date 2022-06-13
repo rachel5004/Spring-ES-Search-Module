@@ -12,7 +12,9 @@ public enum ResponseCode {
     REDIS_KEY_NOT_FOUND( "Redis에서 해당 Key를 찾을 수 없습니다."),
 
     // search
-    INVALID_KEYWORD("유효하지 않은 검색어입니다");
+    INVALID_KEYWORD("유효하지 않은 검색어입니다"),
+    ES_ERROR("Elasticsearch 연결에서 문제가 발생했습니다."),
+    MONGO_ERROR("MongoDB 연결에서 문제가 발생했습니다.");
 
     private final String errorMsg;
 
