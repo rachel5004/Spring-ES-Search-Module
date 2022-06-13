@@ -33,13 +33,6 @@ public class SearchService {
         return SearchBoardResponse.of(searchResponse);
     }
 
-    public List<GameInfo2> searchgameTest(String keyword) {
-//        List<GameInfo2> searchResponse = gameSearchRepository.findByKeyword2(keyword);
-        List<GameInfo2> searchResponse = customGameRepository.findGameByKeywordTest(keyword);
-        return searchResponse;
-    }
-
-
     public SearchResponse searchByKeyword(String keyword) {
         // TODO: count 쿼리와 findby.subList(0,4) 성능 비교
         // search board by keyword limit 4
