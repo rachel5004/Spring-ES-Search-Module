@@ -9,8 +9,7 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.Mapping;
 
 @Getter
-@Document(indexName = "gamewood.board2")
-@Mapping(mappingPath = "mappings.json")
+@Document(indexName = "gamewood-board")
 public class Board {
 
     @Id

@@ -1,0 +1,29 @@
+stats = true
+
+mongo-url = "mongodb://10.140.111.150:27017,10.140.111.150:27018"
+
+elasticsearch-urls = ["http://10.140.111.18:9200"]
+
+direct-read-namespaces = ["gamewood.board"]
+
+dropped-collections = false
+
+dropped-databases = false
+
+resume = false
+
+resume-write-unsafe = true
+
+index-as-update = true
+
+index-oplog-time = true
+
+verbose = true
+
+[[script]]
+script = """
+module.exports = function(doc, ns) {
+    doc._meta_monstache = { index: ns.replace(".","-") };
+    return doc;
+}
+"""

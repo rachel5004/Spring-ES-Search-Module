@@ -25,7 +25,7 @@ bin/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-å
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
@@ -36,5 +36,10 @@ out/
 ### VS Code ###
 .vscode/
 
-../elasticsearch
-../mongodb
+## 설정 파일
+/src/main/resources/application-db.yml
+/src/main/resources/application-es.yml
+
+## DB
+/mongodb/db*
+/elasticsearch/data
